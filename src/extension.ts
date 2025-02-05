@@ -8,10 +8,10 @@ import { activateReadme } from "./activateReadme";
 import { activateTelemetry, deactivateTelemetry } from "./activateTelemetry";
 
 export function activate(context: vscode.ExtensionContext) {
+  const trackEvent = activateTelemetry(context);
   activateReadme(context);
-  activateTelemetry(context);
-  activateChatbot(context);
-  activateLanguageServer(context);
+  activateLanguageServer(context, trackEvent);
+  activateChatbot(context, trackEvent);
 }
 
 export function deactivate(): Thenable<void> | undefined {
