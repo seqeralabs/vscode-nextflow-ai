@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import pollForToken from "./pollForToken";
 import getConfig from "./getConfig";
-import { secretKeys } from "./constants";
+import { varNames } from "./constants";
 
 async function startDeviceFlow(context: vscode.ExtensionContext) {
   // Get our tenant config
@@ -21,7 +21,7 @@ async function startDeviceFlow(context: vscode.ExtensionContext) {
 
   // Store token in SecretStorage
   console.log("🟢 Seqera: Storing access token");
-  await context.secrets.store(secretKeys.accessToken, user.access_token);
+  await context.secrets.store(varNames.accessToken, user.access_token);
 
   // Inform on success
   vscode.window.showInformationMessage("Signed in to Seqera");
