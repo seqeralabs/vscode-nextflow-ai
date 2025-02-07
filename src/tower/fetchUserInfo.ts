@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import { platformApiUrl } from "./constants";
-import { secretKeys } from "../auth/constants";
+import { varNames } from "../auth/constants";
 
 export type User = {
   id: number;
@@ -34,9 +34,10 @@ export type UserInfo = {
 };
 
 const fetchUserInfo = async (
-  context: vscode.ExtensionContext
+  context: vscode.ExtensionContext,
+  token: string
 ): Promise<UserInfo | null> => {
-  const accessToken = await context.secrets.get(secretKeys.accessToken);
+  const accessToken = await context.secrets.get(varNames.accessToken);
   const endpointURL = `${platformApiUrl}/api/user-info`;
 
   if (!accessToken) {
@@ -48,11 +49,17 @@ const fetchUserInfo = async (
 
   const response = await fetch(endpointURL, {
     credentials: "include",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
   });
 
   if (response.status === 401) {
-    await context.secrets.delete(secretKeys.accessToken);
+    console.log(response);
+    const json = await response.text();
+    console.log(json);
+    await context.secrets.delete(varNames.accessToken);
     throw new Error("Failed to fetch user info, deleted access token");
   }
 
@@ -61,10 +68,11 @@ const fetchUserInfo = async (
 };
 
 export default async (
-  context: vscode.ExtensionContext
+  context: vscode.ExtensionContext,
+  token: string
 ): Promise<UserInfo | null> => {
   try {
-    return await fetchUserInfo(context);
+    return await fetchUserInfo(context, token);
   } catch (error: any) {
     console.log("🔴 Seqera:", error.message);
     console.error(error);
