@@ -17,7 +17,7 @@ async function pollForToken(config: Auth0Config): Promise<TokenResponse> {
   const expiresIn = config.expires_in * 1000;
 
   while (true) {
-    // Sleep a sec
+    // Sleep a moment
     await new Promise((resolve) => setTimeout(resolve, interval));
 
     // Attempt to fetch the token
