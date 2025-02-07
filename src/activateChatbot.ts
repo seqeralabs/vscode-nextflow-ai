@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 import { createHandler } from "./chatbot";
 
 export function activateChatbot(context: vscode.ExtensionContext) {
-  console.log("🟢 Seqera extension activated");
+  console.log("🟢 Seqera: Activating Chatbot");
 
   // Create the chat participant
   const chatHandler = createHandler();

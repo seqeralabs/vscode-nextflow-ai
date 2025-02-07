@@ -1,10 +1,15 @@
 import * as vscode from "vscode";
-import { activateLanguageServer, stopLanguageServer } from "./activateLanguageServer";
+import {
+  activateLanguageServer,
+  stopLanguageServer,
+} from "./activateLanguageServer";
 import { activateChatbot } from "./activateChatbot";
+import { activateAuth } from "./activateAuth";
 
-export function activate(context: vscode.ExtensionContext) {
-  activateLanguageServer(context);
+export async function activate(context: vscode.ExtensionContext) {
+  // activateLanguageServer(context);
   activateChatbot(context);
+  await activateAuth(context);
 }
 
 export function deactivate(): Thenable<void> | undefined {
