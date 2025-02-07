@@ -40,8 +40,10 @@ const fetchUserInfo = async (
   const endpointURL = `${platformApiUrl}/api/user-info`;
 
   if (!accessToken) {
-    console.log("🟢 Seqera: No access token stored");
+    console.log("🔴 Seqera: No access token stored");
     return null;
+  } else {
+    console.log("🟢 Seqera: Access token found, attempting to fetch user info");
   }
 
   const response = await fetch(endpointURL, {
@@ -49,7 +51,10 @@ const fetchUserInfo = async (
     headers: { "Content-Type": "application/json" },
   });
 
-  if (response.status === 401) throw new Error("Unauthorized");
+  if (response.status === 401) {
+    await context.secrets.delete(secretKeys.accessToken);
+    throw new Error("Failed to fetch user info, deleted access token");
+  }
 
   const data = await response.json();
   return data as UserInfo;

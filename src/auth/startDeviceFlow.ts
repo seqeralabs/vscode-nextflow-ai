@@ -16,7 +16,11 @@ async function startDeviceFlow(context: vscode.ExtensionContext) {
   // Wait for user, get token
   const user = await pollForToken(config);
 
+  // Exit if failed
+  if (!user) return;
+
   // Store token in SecretStorage
+  console.log("🟢 Seqera: Storing access token");
   await context.secrets.store(secretKeys.accessToken, user.access_token);
 
   // Inform on success
@@ -27,6 +31,6 @@ export default async (context: vscode.ExtensionContext) => {
   try {
     await startDeviceFlow(context);
   } catch (err: any) {
-    vscode.window.showErrorMessage(`Device flow failed: ${err.message}`);
+    vscode.window.showErrorMessage(err.message);
   }
 };
