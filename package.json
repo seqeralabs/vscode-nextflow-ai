@@ -119,6 +119,11 @@
                 "command": "seqera-ai.convertToDSL2",
                 "title": "Convert to DSL2",
                 "category": "Nextflow"
+            },
+            {
+                "command": "seqera-ai.login",
+                "title": "Login to Seqera",
+                "category": "Nextflow"
             }
         ],
         "configuration": {
