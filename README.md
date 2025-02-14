@@ -27,7 +27,7 @@ The following language features are currently supported:
 
 ### VS Code Copilot Extension Features
 
-![VS Code Copilot Extension](images/vscode-copilot-extension.png)
+![VS Code Copilot Extension](images/20250214-Chat-Initation-101.gif)
 
 The extension includes an extension to GitHub Copilot specifically trained for Nextflow development:
 
