@@ -56,9 +56,7 @@ const fetchUserInfo = async (
   });
 
   if (response.status === 401) {
-    console.log(response);
     const json = await response.text();
-    console.log(json);
     await context.secrets.delete(varNames.accessToken);
     throw new Error("Failed to fetch user info, deleted access token");
   }

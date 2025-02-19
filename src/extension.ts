@@ -9,7 +9,6 @@ import { activateAuth } from "./activateAuth";
 
 export async function activate(context: vscode.ExtensionContext) {
   activateReadme(context);
-  // activateLanguageServer(context);
   activateChatbot(context);
   activateLanguageServer(context);
   await activateAuth(context);
