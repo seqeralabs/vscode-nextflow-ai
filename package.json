@@ -101,6 +101,11 @@
         "category": "Nextflow"
       },
       {
+        "command": "nextflow.updateTelemetryConsent",
+        "title": "Update telemetry consent",
+        "category": "Nextflow"
+      },
+      {
         "command": "nextflow.restartServer",
         "title": "Restart language server",
         "category": "Nextflow"
