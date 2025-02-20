@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import { PostHog } from "posthog-node";
 import { randomBytes } from "crypto";
-
+import promptForTelemetryConsent from "./utils/promptForTelemetryConsent";
 export type TrackEvent = (
   eventName: string,
   properties?: { [key: string]: any }
@@ -11,23 +11,42 @@ const key = "phc_pCt2zPQylp5x5dEKMB3TLM2hKBp7aLajUBgAfysPnpd";
 const host = "https://eu.i.posthog.com";
 
 let posthogClient: PostHog | undefined;
-let trackingAllowed = false;
+let hasGlobalConsent = false;
+let userConsentState: "accepted" | "declined" | undefined;
+let hasUserAccepted = false;
+let consentChanged = false;
 
-export function activateTelemetry(
+export async function activateTelemetry(
   context: vscode.ExtensionContext
-): TrackEvent {
+): Promise<TrackEvent> {
   const config = vscode.workspace.getConfiguration("telemetry");
-  trackingAllowed = config.get<boolean>("enableTelemetry", true);
   const vscodeVersion = vscode.version;
   const osPlatform = process.platform;
   const extension = vscode.extensions.getExtension("nextflow.nextflow");
   const extensionVersion = extension?.packageJSON.version ?? "unknown";
 
-  if (!trackingAllowed) return () => {};
+  hasGlobalConsent = config.get<boolean>("enableTelemetry", true);
+  userConsentState = context.globalState.get("telemetryConsent");
+  hasUserAccepted = userConsentState === "accepted";
 
-  const trackEvent = createTrackEvent(context);
+  if (!hasGlobalConsent) return () => {};
+
+  if (!userConsentState) {
+    const consentGiven = await promptForTelemetryConsent(context);
+    hasUserAccepted = consentGiven === true;
+    consentChanged = true;
+  }
+
+  if (!hasUserAccepted) return () => {};
 
   posthogClient = new PostHog(key, { host });
+  const trackEvent = createTrackEvent(context);
+
+  if (consentChanged) {
+    trackEvent("telemetryConsent", {
+      accepted: hasUserAccepted,
+    });
+  }
 
   trackEvent("extensionActivated", {
     extensionVersion,
@@ -35,8 +54,6 @@ export function activateTelemetry(
     osPlatform,
   });
 
-  // Track file open events
-  // TODO: check privacy rules for vscode extensions (here we're storing the user's full file path)
   const fileOpenEvent = vscode.workspace.onDidOpenTextDocument((document) => {
     const filePath = document.fileName;
     trackEvent("fileOpened", {
@@ -77,7 +94,7 @@ function getUserID(context: vscode.ExtensionContext): string {
 }
 
 export function deactivateTelemetry(context: vscode.ExtensionContext) {
-  if (trackingAllowed || !posthogClient) return;
+  if (!hasUserAccepted || !posthogClient) return;
 
   posthogClient.capture({
     distinctId: getUserID(context),
