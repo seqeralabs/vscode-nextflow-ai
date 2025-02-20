@@ -14,7 +14,7 @@ export async function activateAuth(context: vscode.ExtensionContext) {
     }
   });
 
-  const loginCmd = vscode.commands.registerCommand("seqera-ai.login", () => {
+  const loginCmd = vscode.commands.registerCommand("nextflow.login", () => {
     startDeviceFlow(context);
   });
 
