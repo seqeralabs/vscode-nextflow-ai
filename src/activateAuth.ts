@@ -7,8 +7,8 @@ export async function activateAuth(context: vscode.ExtensionContext) {
   console.log("🟢 Seqera: Activating Auth");
 
   context.secrets.onDidChange(async (e) => {
-    if (e.key === varNames.idToken) {
-      const token = await context.secrets.get(varNames.idToken);
+    if (e.key === varNames.accessToken) {
+      const token = await context.secrets.get(varNames.accessToken);
       if (!token) return;
       const userInfo = await fetchUserInfo(context, token);
     }

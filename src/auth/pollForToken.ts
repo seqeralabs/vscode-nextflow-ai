@@ -4,7 +4,7 @@ import { client_id, auth0Domain } from "./constants";
 type TokenResponse = {
   access_token: string;
   refresh_token?: string;
-  id_token: string; // This is the token we want to store
+  id_token: string;
   token_type: string;
   expires_in: number;
   scope?: string;
@@ -46,7 +46,7 @@ async function pollForToken(
 
     // Return token on success
     if (!errorCode) {
-      console.log(responseBody);
+      console.log("🟠 auth0", responseBody);
       return responseBody;
     }
 
