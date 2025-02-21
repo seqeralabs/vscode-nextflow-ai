@@ -4,7 +4,7 @@ import { client_id, auth0Domain } from "./constants";
 type TokenResponse = {
   access_token: string;
   refresh_token?: string;
-  id_token?: string;
+  id_token: string; // This is the token we want to store
   token_type: string;
   expires_in: number;
   scope?: string;
@@ -45,7 +45,10 @@ async function pollForToken(
     const errorCode = responseBody.error;
 
     // Return token on success
-    if (!errorCode) return responseBody;
+    if (!errorCode) {
+      console.log(responseBody);
+      return responseBody;
+    }
 
     const isPending = errorCode === "authorization_pending";
     const timeElapsed = Date.now() - startTime;
