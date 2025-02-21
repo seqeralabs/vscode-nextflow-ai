@@ -15,7 +15,7 @@ async function getConfig(): Promise<Auth0Config> {
   const response = await fetch(configEndpoint, {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: new URLSearchParams({ client_id }),
+    body: new URLSearchParams({ client_id, scope: "openid email profile" }),
   });
 
   if (!response.ok) {
