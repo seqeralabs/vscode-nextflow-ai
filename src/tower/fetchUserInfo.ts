@@ -37,10 +37,10 @@ const fetchUserInfo = async (
   context: vscode.ExtensionContext,
   token: string
 ): Promise<UserInfo | null> => {
-  const accessToken = await context.secrets.get(varNames.accessToken);
+  const idToken = await context.secrets.get(varNames.idToken);
   const endpointURL = `${platformApiUrl}/api/user-info`;
 
-  if (!accessToken) {
+  if (!idToken) {
     console.log("🔴 Seqera: No access token stored");
     return null;
   } else {
@@ -57,7 +57,7 @@ const fetchUserInfo = async (
 
   if (response.status === 401) {
     const json = await response.text();
-    await context.secrets.delete(varNames.accessToken);
+    await context.secrets.delete(varNames.idToken);
     throw new Error("Failed to fetch user info, deleted access token");
   }
 

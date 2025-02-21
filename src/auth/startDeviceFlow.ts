@@ -21,7 +21,7 @@ async function startDeviceFlow(context: vscode.ExtensionContext) {
 
   // Store token in SecretStorage
   console.log("🟢 Seqera: Storing access token");
-  await context.secrets.store(varNames.accessToken, user.id_token);
+  await context.secrets.store(varNames.idToken, user.id_token);
 
   // Inform on success
   vscode.window.showInformationMessage("Signed in to Seqera");
