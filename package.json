@@ -101,6 +101,11 @@
         "category": "Nextflow"
       },
       {
+        "command": "nextflow.updateTelemetryConsent",
+        "title": "Update telemetry consent",
+        "category": "Nextflow"
+      },
+      {
         "command": "nextflow.restartServer",
         "title": "Restart language server",
         "category": "Nextflow"
@@ -216,6 +221,7 @@
   },
   "dependencies": {
     "@vscode/chat-extension-utils": "^0.0.0-alpha.4",
-    "vsce": "^2.15.0"
+    "vsce": "^2.15.0",
+    "posthog-node": "^4.4.1"
   }
 }
