@@ -178,6 +178,8 @@ function onDidChangeConfiguration(event: vscode.ConfigurationChangeEvent) {
 }
 
 function activateLanguageServer(context: vscode.ExtensionContext) {
+  console.log("🟢 Seqera: Activating Nextflow server");
+
   javaPath = findJava();
   extensionContext = context;
   vscode.workspace.onDidChangeConfiguration(onDidChangeConfiguration);

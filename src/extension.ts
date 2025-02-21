@@ -5,11 +5,13 @@ import {
 } from "./activateLanguageServer";
 import { activateChatbot } from "./activateChatbot";
 import { activateReadme } from "./activateReadme";
+import { activateAuth } from "./activateAuth";
 
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
   activateReadme(context);
   activateChatbot(context);
-  activateLanguageServer(context);
+  // activateLanguageServer(context);
+  await activateAuth(context);
 }
 
 export function deactivate(): Thenable<void> | undefined {
